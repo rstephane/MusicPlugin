@@ -1,2 +1,2 @@
 # MusicPlugin
-Find here differnet Music Plug ins .. VST, AU, etc.
+Find here different Music Plug ins .. VST, AU, etc.
