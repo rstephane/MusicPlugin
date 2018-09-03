@@ -1,0 +1,238 @@
+/**
+* Copyright: SMAOLAB 2018
+* License:   $(LINK2 http://www.boost.org/LICENSE_1_0.txt, Boost License 1.0)
+* Author:   Stephane Ribas
+*/
+module main;
+
+import std.math;
+import std.algorithm;
+
+import dplug.core,
+       dplug.client;
+
+import gui;
+
+mixin(DLLEntryPoint!());
+
+version(VST)
+{
+    import dplug.vst;
+    mixin(VSTEntryPoint!TarabiaClient);
+}
+
+version(AU)
+{
+    import dplug.au;
+    mixin(AUEntryPoint!TarabiaClient);
+}
+
+enum : int
+{
+    paramTarabiaAmount,
+    paramMix,
+}
+
+
+/// Example mono/stereo distortion plugin.
+final class TarabiaClient : dplug.client.Client
+{
+public:
+nothrow:
+@nogc:
+
+    this()
+    {
+    }
+
+    override PluginInfo buildPluginInfo()
+    {
+        // Plugin info is parsed from plugin.json here at compile time.
+        // Indeed it is strongly recommended that you do not fill PluginInfo
+        // manually, else the information could diverge.
+        static immutable PluginInfo pluginInfo = parsePluginInfo(import("plugin.json"));
+        return pluginInfo;
+    }
+
+    // This is an optional overload, default is zero parameter.
+    // Caution when adding parameters: always add the indices
+    // in the same order as the parameter enum.
+    override Parameter[] buildParameters()
+    {
+        auto params = makeVec!Parameter();
+        params.pushBack( mallocNew!LinearFloatParameter(paramTarabiaAmount, "Distortion amount", "", 0.00f, 0.90f, 0.01f) );
+        params.pushBack( mallocNew!LinearFloatParameter(paramMix, "Dry/Wet", "%", 0.0f, 100.0f, 80.0f) );
+        return params.releaseData();
+    }
+
+    override LegalIO[] buildLegalIO()
+    {
+        auto io = makeVec!LegalIO();
+        io.pushBack(LegalIO(1, 1));
+        io.pushBack(LegalIO(1, 2));
+        io.pushBack(LegalIO(2, 1));
+        io.pushBack(LegalIO(2, 2));
+        return io.releaseData();
+    }
+
+    // This override is optional, the default implementation will
+    // have one default preset.
+    override Preset[] buildPresets() nothrow @nogc
+    {
+        auto presets = makeVec!Preset();
+        presets.pushBack( makeDefaultPreset() );
+        return presets.releaseData();
+    }
+
+    // This override is also optional. It allows to split audio buffers in order to never
+    // exceed some amount of frames at once.
+    // This can be useful as a cheap chunking for parameter smoothing.
+    // Buffer splitting also allows to allocate statically or on the stack with less worries.
+    override int maxFramesInProcess() const //nothrow @nogc
+    {
+        return 256; // 512
+    }
+
+    override void reset(double sampleRate, int maxFrames, int numInputs, int numOutputs) nothrow @nogc
+    {
+        // Clear here any state and delay buffers you might have.
+
+        assert(maxFrames <= 512); // guaranteed by audio buffer splitting
+    }
+
+    override void processAudio(const(float*)[] inputs, float*[]outputs, int frames,
+                               TimeInfo info) nothrow @nogc
+    {
+        assert(frames <= 512); // guaranteed by audio buffer splitting
+
+        int numInputs = cast(int)inputs.length;
+        int numOutputs = cast(int)outputs.length;
+
+        int minChan = numInputs > numOutputs ? numOutputs : numInputs;
+
+        /// Read parameter values
+        float tarabiaAmount;
+        immutable float mix = readFloatParamValue(paramMix) / 100.0f;
+        tarabiaAmount = readFloatParamValue(paramTarabiaAmount);
+
+        // Rstephane
+        float x, y, k;
+
+        // clipping 2
+        ulong tempDownUpSideValue = 0;
+        ulong tempUpSideDownValue = 0;
+        ulong upSideDownValue = 0;
+        ulong downSideUpValue = 0;
+
+        for (int chan = 0; chan < minChan; ++chan)
+        {
+            for (int f = 0; f < frames; ++f)
+            {
+
+                float inputSample = inputs[chan][f]; // * inputGain;
+                x = inputSample; // input in [-1..1]
+
+                float outputSample = inputSample;
+
+                // The tarabia formula !
+                k = 2*tarabiaAmount/(1-tarabiaAmount); // amount in [-1..1] clip amount in % ?
+                y = (1+k)*x/(1+k*fabs(x));
+                outputSample = y;
+
+                // clipping 2
+                //calibrate maker loop
+                for(int i = 0; i < frames; ++i)
+                {
+                    float summedValue = outputSample + inputSample;
+
+                    if(-1< summedValue && summedValue < 1)
+                    {
+                        //the value is within range -- good boy
+                    }
+                    else
+                    {
+                       //nasty calibration needed
+                        ulong tempCalibrateValue;
+                        tempCalibrateValue = cast(ulong) abs(summedValue) + 1 ;// - SINT16_MIN; // here an optimization comes ;)
+
+                        if(summedValue < 0)
+                        {
+                            //check the downside -- to calibrate
+                            if(tempDownUpSideValue < tempCalibrateValue)
+                                tempDownUpSideValue = tempCalibrateValue;
+                        }
+                        else
+                        {
+                            //check the upside ---- to calibrate
+                            if(tempUpSideDownValue < tempCalibrateValue)
+                                tempUpSideDownValue = tempCalibrateValue;
+                        }
+                    }
+                }
+                //here we need some function which will gradually set the value
+                downSideUpValue = tempUpSideDownValue;
+                upSideDownValue = tempUpSideDownValue;
+
+                float summedValue = outputSample + inputSample;
+
+                    if(summedValue < 0)
+                    {
+                        outputSample = summedValue + downSideUpValue;
+                    }
+                    else if(summedValue > 0)
+                    {
+                        outputSample = summedValue - upSideDownValue;
+                    }
+                    else
+                    {
+                        outputSample = summedValue;
+                    }
+
+                // a nice clipping way
+                // https://stackoverflow.com/questions/376036/algorithm-to-mix-sound
+                //if(outputSample <= -0.99f)
+                //{
+                //    outputSample = -0.984375;
+                //}
+                //else if(outputSample >= 0.99f)
+                //{
+                //    outputSample = 0.984375;
+                //} else
+                //{
+                //    outputSample = 1.1 * outputSample - 0.2 * outputSample * outputSample * outputSample;
+                //}
+
+                // autre formule from yamaha research
+                // output = (3 x input / 2)*(1- (input*input)/3)
+                if(abs(outputSample) <= 0.98f)
+                {
+                    outputSample = (3 x input / 2)*(1- (input*input)/3);
+                }
+                // re inject in the buffer :)
+                outputs[chan][f] = ((outputSample * mix) + (inputSample * (1 - mix)));
+
+            }
+        }
+
+        // fill with zero the remaining channels
+        for (int chan = minChan; chan < numOutputs; ++chan)
+            outputs[chan][0..frames] = 0; // D has array slices assignments and operations
+
+        /// Get access to the GUI
+        if (TarabiaGUI gui = cast(TarabiaGUI) graphicsAcquire())
+        {
+            /// This is where you would update any elements in the gui
+            /// such as feeding values to meters.
+
+            graphicsRelease();
+        }
+    }
+
+    override IGraphics createGraphics()
+    {
+        return mallocNew!TarabiaGUI(this);
+    }
+
+private:
+
+}

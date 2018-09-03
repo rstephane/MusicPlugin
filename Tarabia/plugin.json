@@ -1,0 +1,14 @@
+{
+    "$schema": "https://raw.githubusercontent.com/AuburnSounds/dplug/master/plugin-schema.json",
+
+    "vendorName": "SMAOLAB",
+    "vendorUniqueID": "smao",
+    "pluginName": "Tarabia Distortion",
+    "pluginUniqueID": "TARA",
+    "publicVersion": "1.0.0",
+    "CFBundleIdentifierPrefix": "com.smaolab",
+    "hasGUI": true,
+    "isSynth": false,
+    "receivesMIDI": false,
+    "category": "effectDistortion"
+}
