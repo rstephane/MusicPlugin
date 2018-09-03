@@ -1,7 +1,7 @@
 # Tarabia Distortion Plug in
 
 ## Description
-Tarabia Distortion is a … distortion plug in effect based on two specials algortihms :
+Tarabia Distortion is a … distortion plug in effect based on two specials algorithms :
 - Tarabia formula (Hard distortion), and,
 - Yamaha 80’s synth soft distortion formula.
 
@@ -30,16 +30,18 @@ In order to compile this program, you will need :
 - Once you have installed DPLUG, you can pass to the next paragraph :)
 
 ### Compile
-- Once you have installed the Dplug framework, you will get a folder that contains several subfolder...
-- One of them is called 'examples'. Copy the 'tarabia' folder (the folder you have here, my code!) into the 'examples' subfolder.
-- Open a terminal window
-- Go to the subfolder 'examples/tarabia' .. 'cd /users/something/something/...' :)
-- Luanch the command 'dplug-build --compiler ldc', you can also use 'dplug-build --compiler ldc --force' to force the compilation from scratch (meaning that it removes all libs and recompile them).
-- Note that you will need an internet connexion when you compile the code. Indeed, Dub (the compiler) will require to fetch some external librairies.... It needs thus an internet connexion the first time, it will after caches the libs...
+- Once you have installed the Dplug framework, you will get a folder that contains several subfolders...
+- One of them is called 'examples'.
+- Copy the 'tarabia' folder (the folder you have here, my code!) into the 'examples' subfolder.
+- Open a terminal window.
+- Go to the subfolder 'examples/tarabia/'. I guess you should do a 'cd /users/something/something/...'.
+- Launch the command 'dplug-build --compiler ldc'.
+- You can also use 'dplug-build --compiler ldc --force' to force the compilation from scratch (meaning that it removes all libs and recompile them).
+- Note that you will need an internet connexion when you compile the code. Indeed, Dub (the compiler) will require to fetch some external librairies. It needs thus an internet connexion the first time, it will after caches the libs.
 
 You should get the following output :
 
-`
+```
 info: Missing "userManualPath" in plugin.json (eg: "UserManual.pdf")
 info: Missing "licensePath" in plugin.json (eg: "license.txt")
 info: Missing "iconPath" in plugin.json (eg: "gfx/myIcon.png")
@@ -105,7 +107,12 @@ Invalid source/import path: /Users/sribas/Documents/Dplug/$VST2_SDK/pluginterfac
 *** Generating a .rsrc file for the bundle...
 $ rez -arch x86_64 -o /var/folders/x2/mf7drrc5007bscfzr0fcyk1m0000gn/T/plugin.rsrc -useDF /var/folders/x2/mf7drrc5007bscfzr0fcyk1m0000gn/T/plugin.r
     => Written 540 bytes.
-`
+```
+
+- Now, you should go to the subfolder 'examples/tarabia/builds'.. you will find there the VST and Audio unit Compilation results ! You are done !
+- Copy the VST (and/or the Audio unit file) into your VST folder and launch your favorite DAW...
+- Enjoy .. heu nope .. Destroy (Tarabia is a distortion plug in :) )
+
 -- END
 
 ### Another good exemple of how to create your own plug in
