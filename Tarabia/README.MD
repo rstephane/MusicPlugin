@@ -43,14 +43,13 @@ For Windows :
 - Now, if you are on windows, launch the command 'dub --compiler=ldc2'
 - The dub program will produce a .DLL file (which is the VST program) located in the BUILD folder.
 - Copy this file into your VST effect folder and lauch your favorite DAW.
+- You are done !!
 
 For MAC :
 - On MAC, to compile VST/AU plug ins, you need to use the tool 'dplug-build'. You should have installed/compiled it if you have followed the instructions from Auburn Sounds.
 - Launch the command 'dplug-build --compiler ldc'.
 
-Note that you may need an internet connexion when you compile the tarabia code for the first time. Indeed, Dub (the compiler) will require to fetch some extra librairies. It will after caches the libs on your local disk.
-
-On MAC, you should get the following output :
+You should get the following output :
 
 ```
 info: Missing "userManualPath" in plugin.json (eg: "UserManual.pdf")
@@ -120,11 +119,13 @@ $ rez -arch x86_64 -o /var/folders/x2/mf7drrc5007bscfzr0fcyk1m0000gn/T/plugin.rs
     => Written 540 bytes.
 ```
 
-- Now, you should go to the subfolder '.../examples/tarabia/builds', you will find there the VST and Audio Unit compilation results.
+- Now, go to the subfolder '.../examples/tarabia/builds', you will find there the VST and Audio Unit compilation results.
 - Copy the VST (and/or the Audio unit file) into your VST folder and launch your favorite DAW...
 - Enjoy .. heu nope .. Destroy (Tarabia is a distortion plug in :) )
 
--- END
+-- END for Mac users !
+
+Note that you may need an internet connexion when you compile the tarabia code for the first time. Indeed, Dub (the compiler) will require to fetch some extra librairies. It will caches the libs on your local disk.
 
 ### Another example of how to create your own plug in using Dplug
 - https://www.auburnsounds.com/blog/2016-02-08_Making-a-Windows-VST-plugin-with-D.html
