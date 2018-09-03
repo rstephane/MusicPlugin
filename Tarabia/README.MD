@@ -35,7 +35,7 @@ Once you have installed DPLUG, you can pass to the next paragraph.
 ### Compilation
 Once you have installed the Dplug framework, you will get a folder that contains several subfolders :
 - One of them is called 'examples'.
-- Copy the 'tarabia' folder (the folder you have here, my code!) into the 'examples' folder.
+- Copy the 'tarabia' folder (https://github.com/rstephane/MusicPlugin/archive/master.zip) into the 'examples' folder.
 - Open a terminal window.
 - Go to the subfolder 'examples/tarabia/'.
 
