@@ -27,6 +27,9 @@ In order to compile this program, you will need :
 - Install the Dplug framework. You will find all the steps instructions here : https://github.com/AuburnSounds/Dplug/wiki/Getting-Started   
 
 The installation process is very simple (straigthforward) but you need to follow the instructions :)
+
+For Mac users, in this 'Getting Started', a dedicated section explains how to compile a special tool called 'Dplug-Build'. Very straigthforward but don't forget to do it.
+
 Once you have installed DPLUG, you can pass to the next paragraph.
 
 ### Compilation
@@ -42,7 +45,7 @@ For Windows :
 - Copy this file into your VST effect folder and lauch your favorite DAW.
 
 For MAC :
-- On MAC, to compile VST/AU plug ins, you need to use the tool 'dplug-build'. In the Getting Started from Auburn Sound, a dedicated section explains how to compile this tool. Very straigthforward. If you have followed the instrucitons, you should have allready compiled this tool, and thus, you can use it ...
+- On MAC, to compile VST/AU plug ins, you need to use the tool 'dplug-build'. You should have installed/compiled it if you have followed the instructions from Auburn Sounds.
 - Launch the command 'dplug-build --compiler ldc'.
 
 Note that you may need an internet connexion when you compile the tarabia code for the first time. Indeed, Dub (the compiler) will require to fetch some extra librairies. It will after caches the libs on your local disk.
@@ -117,13 +120,13 @@ $ rez -arch x86_64 -o /var/folders/x2/mf7drrc5007bscfzr0fcyk1m0000gn/T/plugin.rs
     => Written 540 bytes.
 ```
 
-- Now, you should go to the subfolder 'examples/tarabia/builds'.. you will find there the VST and Audio Unit compilation results ! You are done !
+- Now, you should go to the subfolder '.../examples/tarabia/builds', you will find there the VST and Audio Unit compilation results.
 - Copy the VST (and/or the Audio unit file) into your VST folder and launch your favorite DAW...
 - Enjoy .. heu nope .. Destroy (Tarabia is a distortion plug in :) )
 
 -- END
 
-### Another example of how to create your own plug in using Dplug can be found here
+### Another example of how to create your own plug in using Dplug
 - https://www.auburnsounds.com/blog/2016-02-08_Making-a-Windows-VST-plugin-with-D.html
 
 ### References on Dplug
