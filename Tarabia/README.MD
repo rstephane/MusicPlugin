@@ -130,6 +130,9 @@ Note that you may need an internet connexion when you compile the tarabia code f
 ### Another example of how to create your own plug in using Dplug
 - https://www.auburnsounds.com/blog/2016-02-08_Making-a-Windows-VST-plugin-with-D.html
 
+### VST2 Steinberg Licence Agreement : IMPORTANT
+- Before you make VST plugins with Dplug, you need to read and agree with the license for the VST3 SDK by Steinberg. If you don't agree with the VST SDK license, you can't make plugins with Dplug. Find the VST3 SDK there: http://www.steinberg.net/en/company/developers.html
+
 ### References on Dplug
 - Github about DPLUG: https://github.com/AuburnSounds/Dplug
 - Dplug documentation : http://dplug.dpldocs.info/index.html
