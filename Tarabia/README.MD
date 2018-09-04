@@ -131,7 +131,14 @@ Note that you may need an internet connexion when you compile the tarabia code f
 - https://www.auburnsounds.com/blog/2016-02-08_Making-a-Windows-VST-plugin-with-D.html
 
 ### VST2 Steinberg Licence Agreement : IMPORTANT
-- Before you make VST plugins with Dplug, you need to read and agree with the license for the VST3 SDK by Steinberg. If you don't agree with the VST SDK license, you can't make plugins with Dplug. Find the VST3 SDK there: http://www.steinberg.net/en/company/developers.html
+- Find the VST2 and 3 SDK there: http://www.steinberg.net/en/company/developers.html
+- If you want to develop plug ins and keep it for you I guess that just downloading the VST code from the github steinberg account should be sufficient.
+- If you want to develop, distribute widely and/or sell you plug in, you must fill and sign the steinberg licence agreement.
+- The licence agreement can be downloaded from the steinberg website but I noticed that I could not download it easily, don't hesitate to contact steinberg via email. They sent me the document.
+- Print it, Fill it, Scan it, Send it back by email.
+- You should get back few days/weeks after the document filled by steinberg. Keep it !
+- Don't underestimate this licence agreement :) if you don't sign the agreement and try to distribute widely your plug in, I guess steinberg may, one day, contact you :)
+- More details on their BLOG: https://www.steinberg.net/en/newsandevents/news/newsdetail/article/vst-2-coming-to-an-end-4727.html
 
 ### References on Dplug
 - Github about DPLUG: https://github.com/AuburnSounds/Dplug
