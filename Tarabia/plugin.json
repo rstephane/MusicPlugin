@@ -1,10 +1,10 @@
 {
     "$schema": "https://raw.githubusercontent.com/AuburnSounds/dplug/master/plugin-schema.json",
 
-    "vendorName": "SMAOLAB",
+    "vendorName": "smaolab",
     "vendorUniqueID": "smao",
-    "pluginName": "Tarabia Distortion",
-    "pluginUniqueID": "TARA",
+    "pluginName": "tarabia distortion",
+    "pluginUniqueID": "tara",
     "publicVersion": "1.0.0",
     "CFBundleIdentifierPrefix": "com.smaolab",
     "hasGUI": true,

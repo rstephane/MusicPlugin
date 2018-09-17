@@ -61,7 +61,7 @@ nothrow:
     override Parameter[] buildParameters()
     {
         auto params = makeVec!Parameter();
-        params.pushBack( mallocNew!LinearFloatParameter(paramTarabiaAmount, "Distortion amount", "", 0.00f, 0.99f, 0.0f) );
+        params.pushBack( mallocNew!LinearFloatParameter(paramTarabiaAmount, "Distortion amount", "", 0.0f, 0.99f, 0.0f) );
         params.pushBack( mallocNew!LinearFloatParameter(paramMix, "Dry/Wet", "%", 0.0f, 100.0f, 80.0f) );
         params.pushBack( mallocNew!BoolParameter(paramClip, "Soft Clipping?", true));
         return params.releaseData();
